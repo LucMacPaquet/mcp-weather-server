@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mcp-weather-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mcp-weather-server:latest
+    container_name: mcp-weather-server
+    environment:
+      - WEATHERAPI_KEY=${WEATHERAPI_KEY:-13ced4f0f05a4a4f986223827252410}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - API_TIMEOUT=${API_TIMEOUT:-10}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

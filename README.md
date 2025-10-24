@@ -1,6 +1,6 @@
 # MCP Weather Server
 
-A Model Context Protocol (MCP) server that provides weather data through OpenWeatherMap API. This server enables MCP clients like Kiro and Claude to access current weather conditions and forecasts for any location.
+A Model Context Protocol (MCP) server that provides weather data through WeatherAPI.com. This server enables MCP clients like Kiro and Claude to access current weather conditions and forecasts for any location.
 
 ## Features
 
@@ -10,12 +10,14 @@ A Model Context Protocol (MCP) server that provides weather data through OpenWea
 - **Comprehensive Data**: Includes UV index, sunrise/sunset times, atmospheric pressure, and visibility
 - **Error Handling**: Robust error management with descriptive messages
 - **MCP Protocol**: Full compliance with Model Context Protocol specification
+- **Docker Support**: Run in a container for easy deployment (see [DOCKER.md](DOCKER.md))
 
 ## Prerequisites
 
 - Python 3.10 or higher
-- OpenWeatherMap API key (free tier available at [openweathermap.org](https://openweathermap.org/api))
+- WeatherAPI.com API key (free tier available at [weatherapi.com](https://www.weatherapi.com/))
 - `uv` and `uvx` installed (see [installation guide](https://docs.astral.sh/uv/getting-started/installation/))
+- **OR** Docker (for containerized deployment)
 
 ## Installation
 
