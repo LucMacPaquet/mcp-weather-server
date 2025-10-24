@@ -123,9 +123,19 @@ def handle_mcp_request(request_data):
 
 def main():
     """Main loop - read JSON-RPC from stdin, forward to HTTP server, write response to stdout"""
+    import sys
+    
+    # Ensure unbuffered I/O
+    sys.stdin.reconfigure(line_buffering=True)
+    sys.stdout.reconfigure(line_buffering=True)
+    
     for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+            
         try:
-            request = json.loads(line.strip())
+            request = json.loads(line)
             response = handle_mcp_request(request)
             print(json.dumps(response), flush=True)
         except json.JSONDecodeError as e:
