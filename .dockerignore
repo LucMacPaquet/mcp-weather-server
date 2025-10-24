@@ -35,9 +35,12 @@ htmlcov/
 test_*.py
 INTEGRATION_TEST_RESULTS.md
 
-# Documentation
-*.md
-!README.md
+# Documentation (keep README.md for build)
+DOCKER.md
+TESTING.md
+DEPLOYMENT.md
+NETWORK_ACCESS.md
+INTEGRATION_TEST_RESULTS.md
 
 # OS
 .DS_Store
