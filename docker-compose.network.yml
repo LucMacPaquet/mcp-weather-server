@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mcp-weather-server-network:
+    build:
+      context: .
+      dockerfile: Dockerfile.network
+    image: mcp-weather-server:network
+    container_name: mcp-weather-server-network
+    environment:
+      - WEATHERAPI_KEY=${WEATHERAPI_KEY:-13ced4f0f05a4a4f986223827252410}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - API_TIMEOUT=${API_TIMEOUT:-10}
+      - HOST=0.0.0.0
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
