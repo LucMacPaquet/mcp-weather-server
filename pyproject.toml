@@ -1,0 +1,46 @@
+[project]
+name = "mcp-weather-server"
+version = "0.1.0"
+description = "MCP server for weather data via OpenWeatherMap"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "MCP Weather Server Contributors" }
+]
+keywords = ["mcp", "weather", "openweathermap", "model-context-protocol"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "mcp>=0.9.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
+    "httpx-mock>=0.1.0"
+]
+
+[project.scripts]
+mcp-weather-server = "mcp_weather_server.__main__:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_weather_server"]
