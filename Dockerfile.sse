@@ -1,0 +1,31 @@
+# Dockerfile for MCP Weather Server with SSE transport
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy project files
+COPY pyproject.toml ./
+COPY README.md ./
+COPY src/ ./src/
+COPY mcp_sse_server.py ./
+
+# Install Python dependencies + uvicorn for HTTP server
+RUN pip install --no-cache-dir -e . && \
+    pip install --no-cache-dir uvicorn fastapi
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV WEATHERAPI_KEY=""
+ENV HOST=0.0.0.0
+ENV PORT=8080
+
+# Expose port for network access
+EXPOSE 8080
+
+# Run the SSE server
+CMD ["python", "mcp_sse_server.py"]
