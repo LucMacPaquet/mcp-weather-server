@@ -18,10 +18,10 @@ Le serveur peut fonctionner en deux modes:
 docker-compose -f docker-compose.network.yml up -d
 
 # Vérifier que le serveur fonctionne
-curl http://localhost:8080/health
+curl http://localhost:8081/health
 ```
 
-Le serveur sera accessible sur le port **8080**.
+Le serveur sera accessible sur le port **8081** (mappé depuis le port interne 8080).
 
 ### Option 2: Docker manuel
 
@@ -32,12 +32,12 @@ docker build -f Dockerfile.network -t mcp-weather-server:network .
 # Démarrer le conteneur
 docker run -d \
   --name mcp-weather-server-network \
-  -p 8080:8080 \
+  -p 8080:8081 \
   -e WEATHERAPI_KEY=13ced4f0f05a4a4f986223827252410 \
   mcp-weather-server:network
 
 # Vérifier
-curl http://localhost:8080/health
+curl http://localhost:8081/health
 ```
 
 ### Option 3: Python directement
@@ -75,17 +75,17 @@ Exemple de sortie: `192.168.1.100`
 Une fois le serveur démarré, il est accessible depuis n'importe quel ordinateur sur le même réseau:
 
 ```
-http://[ADRESSE_IP]:8080
+http://[ADRESSE_IP]:8081
 ```
 
-Exemple: `http://192.168.1.100:8080`
+Exemple: `http://192.168.1.100:8081`
 
 ## Endpoints API
 
 ### 1. Informations du serveur
 
 ```bash
-curl http://192.168.1.100:8080/
+curl http://192.168.1.100:8081/
 ```
 
 Réponse:
@@ -106,40 +106,40 @@ Réponse:
 ### 2. Health Check
 
 ```bash
-curl http://192.168.1.100:8080/health
+curl http://192.168.1.100:8081/health
 ```
 
 ### 3. Liste des outils disponibles
 
 ```bash
-curl http://192.168.1.100:8080/tools
+curl http://192.168.1.100:8081/tools
 ```
 
 ### 4. Météo actuelle
 
 ```bash
 # Par nom de ville
-curl "http://192.168.1.100:8080/weather/current?location=Paris&units=metric"
+curl "http://192.168.1.100:8081/weather/current?location=Paris&units=metric"
 
 # Par coordonnées
-curl "http://192.168.1.100:8080/weather/current?location=48.8566,2.3522&units=metric"
+curl "http://192.168.1.100:8081/weather/current?location=48.8566,2.3522&units=metric"
 ```
 
 ### 5. Prévisions météo
 
 ```bash
 # 5 jours pour Paris
-curl "http://192.168.1.100:8080/weather/forecast?location=Paris&days=5&units=metric"
+curl "http://192.168.1.100:8081/weather/forecast?location=Paris&days=5&units=metric"
 
 # 3 jours pour Montréal
-curl "http://192.168.1.100:8080/weather/forecast?location=Montreal&days=3&units=metric"
+curl "http://192.168.1.100:8081/weather/forecast?location=Montreal&days=3&units=metric"
 ```
 
 ### 6. Endpoint MCP (JSON-RPC)
 
 ```bash
 # Lister les outils
-curl -X POST http://192.168.1.100:8080/mcp \
+curl -X POST http://192.168.1.100:8081/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -148,7 +148,7 @@ curl -X POST http://192.168.1.100:8080/mcp \
   }'
 
 # Appeler un outil
-curl -X POST http://192.168.1.100:8080/mcp \
+curl -X POST http://192.168.1.100:8081/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -172,7 +172,7 @@ curl -X POST http://192.168.1.100:8080/mcp \
 import requests
 
 # Adresse du serveur
-SERVER_URL = "http://192.168.1.100:8080"
+SERVER_URL = "http://192.168.1.100:8081"
 
 # Obtenir la météo actuelle
 response = requests.get(
@@ -198,7 +198,7 @@ for day in forecast['forecast']:
 ```javascript
 const axios = require('axios');
 
-const SERVER_URL = 'http://192.168.1.100:8080';
+const SERVER_URL = 'http://192.168.1.100:8081';
 
 // Météo actuelle
 async function getCurrentWeather(location) {
@@ -227,7 +227,7 @@ getCurrentWeather('Paris').then(weather => {
 ```bash
 #!/bin/bash
 
-SERVER_URL="http://192.168.1.100:8080"
+SERVER_URL="http://192.168.1.100:8081"
 
 # Fonction pour obtenir la météo
 get_weather() {
@@ -324,7 +324,7 @@ docker run -d \
   -p 443:443 \
   -v caddy_data:/data \
   caddy:latest \
-  caddy reverse-proxy --from weather.example.com --to mcp-weather-server-network:8080
+  caddy reverse-proxy --from weather.example.com --to mcp-weather-server-network:8081
 ```
 
 ## Accès depuis Internet (Optionnel)
@@ -353,7 +353,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up
 
 # Le serveur sera accessible via l'IP Tailscale
-# Exemple: http://100.x.y.z:8080
+# Exemple: http://100.x.y.z:8081
 ```
 
 ## Monitoring
@@ -390,10 +390,10 @@ docker stats mcp-weather-server-network
 2. **Vérifier le pare-feu:**
    ```bash
    # Tester depuis le serveur lui-même
-   curl http://localhost:8080/health
+   curl http://localhost:8081/health
    
    # Tester depuis un autre ordinateur
-   curl http://[IP_DU_SERVEUR]:8080/health
+   curl http://[IP_DU_SERVEUR]:8081/health
    ```
 
 3. **Vérifier que les ordinateurs sont sur le même réseau:**
@@ -429,8 +429,8 @@ docker-compose -f docker-compose.network.yml restart
 docker-compose -f docker-compose.network.yml logs -f
 
 # Tester depuis un autre ordinateur
-curl http://[IP]:8080/health
-curl "http://[IP]:8080/weather/current?location=Paris"
+curl http://[IP]:8081/health
+curl "http://[IP]:8081/weather/current?location=Paris"
 
 # Voir les connexions actives
 docker exec mcp-weather-server-network netstat -an | grep 8080
@@ -447,8 +447,8 @@ docker-compose -f docker-compose.network.yml up -d
 ifconfig | grep "inet " | grep -v 127.0.0.1
 
 # Depuis un autre ordinateur
-curl http://[IP]:8080/health
-curl "http://[IP]:8080/weather/current?location=Paris"
+curl http://[IP]:8081/health
+curl "http://[IP]:8081/weather/current?location=Paris"
 ```
 
 Le serveur est maintenant accessible depuis n'importe quel ordinateur sur votre réseau! 🌐🌤️

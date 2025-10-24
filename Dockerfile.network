@@ -26,6 +26,7 @@ ENV PORT=8080
 
 # Expose port for network access
 EXPOSE 8080
+# Note: Map to host port 8081 to avoid conflicts (docker run -p 8081:8080)
 
 # Run the network-accessible server
 CMD ["python", "network_server.py"]

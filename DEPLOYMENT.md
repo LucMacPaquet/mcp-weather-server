@@ -496,15 +496,15 @@ docker-compose -f docker-compose.network.yml up -d
 # Trouver votre adresse IP
 ifconfig | grep "inet " | grep -v 127.0.0.1
 
-# Le serveur est accessible sur http://[VOTRE_IP]:8080
+# Le serveur est accessible sur http://[VOTRE_IP]:8081
 ```
 
 ### Tester depuis un autre ordinateur
 
 ```bash
 # Remplacer [IP] par l'adresse IP du serveur
-curl http://[IP]:8080/health
-curl "http://[IP]:8080/weather/current?location=Paris"
+curl http://[IP]:8081/health
+curl "http://[IP]:8081/weather/current?location=Paris"
 ```
 
 ### Endpoints disponibles
